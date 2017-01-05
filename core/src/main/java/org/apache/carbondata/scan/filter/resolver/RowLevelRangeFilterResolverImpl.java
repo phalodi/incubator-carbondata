@@ -114,7 +114,7 @@ public class RowLevelRangeFilterResolverImpl extends ConditionalFilterResolverIm
         .getEndKeyForNoDictionaryDimension(dimColEvaluatorInfoList.get(0), noDicEndKeys);
   }
 
-  private List<byte[]> getNoDictionaryRangeValues() {
+  private List<byte[]> getNoDictionaryRangeValues() throws FilterUnsupportedException {
     List<ExpressionResult> listOfExpressionResults = new ArrayList<ExpressionResult>(20);
     if (this.getFilterExpression() instanceof BinaryConditionalExpression) {
       listOfExpressionResults =
@@ -134,6 +134,7 @@ public class RowLevelRangeFilterResolverImpl extends ConditionalFilterResolverIm
         // error only once since all rows the evaluation happens so inorder to avoid
         // too much log inforation only once the log will be printed.
         FilterUtil.logError(e, invalidRowsPresent);
+        throw new FilterUnsupportedException(e);
       }
     }
     Comparator<byte[]> filterNoDictValueComaparator = new Comparator<byte[]>() {
@@ -208,6 +209,7 @@ public class RowLevelRangeFilterResolverImpl extends ConditionalFilterResolverIm
                 CarbonCommonConstants.CARBON_TIMESTAMP_DEFAULT_FORMAT));
       }
     } catch (FilterIllegalMemberException e) {
+      FilterUtil.logError(e, false);
       throw new FilterUnsupportedException(e);
     }
     return filterValuesList;
