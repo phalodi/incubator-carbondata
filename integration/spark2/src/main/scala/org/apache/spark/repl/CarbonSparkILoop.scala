@@ -21,23 +21,23 @@ class CarbonSparkILoop extends SparkILoop {
 
   override def initializeSpark() {
     intp.beQuietDuring {
-      command("""
+      processLine("""
          if(org.apache.spark.repl.carbon.Main.interp == null) {
            org.apache.spark.repl.carbon.Main.main(Array[String]())
          }
               """)
-      command("val i1 = org.apache.spark.repl.carbon.Main.interp")
-      command("import i1._")
-      command("""
+      processLine("val i1 = org.apache.spark.repl.carbon.Main.interp")
+      processLine("import i1._")
+      processLine("""
          @transient val sc = {
            val _sc = i1.createSparkContext()
            println("Spark context available as sc.")
            _sc
          }
               """)
-      command("import org.apache.spark.SparkContext._")
-      command("import org.apache.spark.sql.CarbonContext")
-      command("""
+      processLine("import org.apache.spark.SparkContext._")
+      processLine("import org.apache.spark.sql.CarbonContext")
+      processLine("""
          @transient val cc = {
            val _cc = {
              import java.io.File
@@ -53,20 +53,20 @@ class CarbonSparkILoop extends SparkILoop {
          }
               """)
 
-      command("import org.apache.spark.sql.SQLContext")
-      command("""
+      processLine("import org.apache.spark.sql.SQLContext")
+      processLine("""
          @transient val sqlContext = {
            val _sqlContext = new SQLContext(sc)
            println("SQL context available as sqlContext.")
            _sqlContext
          }
               """)
-      command("import sqlContext.implicits._")
-      command("import sqlContext.sql")
+      processLine("import sqlContext.implicits._")
+      processLine("import sqlContext.sql")
 
-      command("import cc.implicits._")
-      command("import cc.sql")
-      command("import org.apache.spark.sql.functions._")
+      processLine("import cc.implicits._")
+      processLine("import cc.sql")
+      processLine("import org.apache.spark.sql.functions._")
     }
   }
 }
