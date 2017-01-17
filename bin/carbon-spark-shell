@@ -33,9 +33,15 @@ export _SPARK_CMD_USAGE="Usage: ./bin/spark-shell [options]"
 
 export FWDIR=$SPARK_HOME
 export CARBON_SOURCE="$(cd "`dirname "$0"`"/..; pwd)"
-ASSEMBLY_DIR="$CARBON_SOURCE/assembly/target/scala-2.11"
+ASSEMBLY_DIR="$CARBON_SOURCE/assembly/target/scala-2.10"
 GREP_OPTIONS=
 num_jars="$(ls -1 "$ASSEMBLY_DIR" | grep "^carbondata.*hadoop.*\.jar$" | wc -l)"
+
+if [ "$num_jars" -eq "0" ]; then
+ASSEMBLY_DIR="$CARBON_SOURCE/assembly/target/scala-2.11"
+num_jars="$(ls -1 "$ASSEMBLY_DIR" | grep "^carbondata.*hadoop.*\.jar$" | wc -l)"
+fi
+
 if [ "$num_jars" -eq "0" -a -z "$ASSEMBLY_DIR" ]; then
   echo "Failed to find Carbondata assembly in $ASSEMBLY_DIR." 1>&2
   echo "You need to build Carbondata before running this program." 1>&2
