@@ -56,10 +56,10 @@ class CarbonSpark2ILoop extends SparkILoop {
       processLine("import org.apache.spark.sql.CarbonSession")
       processLine("import org.apache.spark.sql.SparkSession.Builder")
       processLine(
-        """val metastoredb = this.getClass.getResource("../").getPath+"target/metastore/" """.stripMargin)
-      processLine("""println(":::::::::::::"+this.getClass.getResource("../").getPath+"target/metastore/")""")
+        """val metastoredb = this.getClass.getResource("../").getPath+"metastore/" """.stripMargin)
+      processLine("""println(":::::::::::::"+this.getClass.getResource("../").getPath+"metastore/")""")
       processLine(
-        """val warehouse = this.getClass.getResource("../").getPath+"target/warehouse"""".stripMargin)
+        """val warehouse = this.getClass.getResource("../").getPath+"warehouse"""".stripMargin)
       processLine("val _builder = new CarbonSession.CarbonBuilder(new Builder().config(\"spark" +
                   ".sql.warehouse.dir\", s\"$warehouse\").config(\"javax.jdo.option" +
                   ".ConnectionURL\",s\"jdbc:derby:;databaseName=$metastoredb;create=true\"));")
